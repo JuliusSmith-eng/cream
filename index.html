@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="ru" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>KORA — Botanical Skincare</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="state-0">
+    <header>
+      <img src="images/logonoback.png" alt="KORA Logo" class="brand-logo" />
+      <nav>
+        <a href="#">Ingredients</a>
+        <a href="#benefits-section">Benefits</a>
+        <a href="#about-section">About</a>
+      </nav>
+      <button class="theme-toggle" id="themeBtn">☀️ Light</button>
+    </header>
+
+    <div class="scroll-track" id="about-section">
+      <div class="sticky-viewport">
+        <!-- Задний фон: логотип -->
+        <div class="bg-logo-container" id="bgLogo">
+          <img
+            src="images/logonoback.png"
+            alt="Background Logo"
+            class="bg-logo-img"
+          />
+        </div>
+
+        <!-- Кусты на первом плане -->
+        <div class="plants-layer">
+          <img src="images/tree-left.png" class="tree-left" alt="Plant Left" />
+          <img
+            src="images/tree-right.png"
+            class="tree-right"
+            alt="Plant Right"
+          />
+        </div>
+
+        <!-- Фоновый круг для 4-го шага -->
+        <div class="benefit-circle-bg"></div>
+
+        <!-- Слой с рукой -->
+        <div class="hand-layer">
+          <img src="images/hand.png" alt="Hand" class="hand-img" />
+        </div>
+
+        <!-- Продукт 700x700px -->
+        <div class="product-container">
+          <img src="images/jar.png" alt="Cream Jar Body" class="jar-body" />
+          <img src="images/cap.png" alt="Cream Cap" class="jar-cap" />
+          <img
+            src="images/closeCap.png"
+            alt="Closed Cream Jar"
+            class="jar-closed"
+          />
+        </div>
+
+        <!-- Шаг 2: Информационные плашки (About Us) -->
+        <div class="info-card info-top-left">
+          <span class="info-tag">Our Heritage</span>
+          <p>
+            KORA was founded with a vision to
+            <em>redefine pure skincare</em> through uncompromising quality.
+          </p>
+        </div>
+
+        <div class="info-card info-top-right">
+          <span class="info-tag">Pure Materials</span>
+          <p>
+            We work exclusively with
+            <em>certified botanical ingredients</em> harvested from trusted
+            sources.
+          </p>
+        </div>
+
+        <div class="info-card info-bottom-left">
+          <span class="info-tag">Eco-Philosophy</span>
+          <p>
+            Our formulas are crafted to respect nature,
+            <em>ensuring zero harm to the environment.</em>
+          </p>
+        </div>
+
+        <div class="info-card info-bottom-right">
+          <span class="info-tag">Sustainable Lab</span>
+          <p>
+            Every batch is produced locally
+            <em>using green energy and recyclable glass.</em>
+          </p>
+        </div>
+
+        <div class="info-card info-footer-wide">
+          <p>
+            <strong class="gold-text">KORA Skincare</strong> —
+            <em
+              >Born from the earth, perfected by science to nurture your natural
+              radiance.</em
+            >
+          </p>
+        </div>
+
+        <!-- Шаг 3: Плашки с составом (Ингредиенты) -->
+        <div class="cards-layer">
+          <div class="card card-1">
+            <div class="icon-circle">🌿</div>
+            <div class="card-content">
+              <h4>Aloe Vera</h4>
+              <p>Provides deep hydration.</p>
+            </div>
+          </div>
+
+          <div class="card card-2">
+            <div class="icon-circle">💧</div>
+            <div class="card-content">
+              <h4>Squalane</h4>
+              <p>Maintains moisture balance.</p>
+            </div>
+          </div>
+
+          <div class="card card-3">
+            <div class="icon-circle">✨</div>
+            <div class="card-content">
+              <h4>Vitamin E</h4>
+              <p>Antioxidant protection.</p>
+            </div>
+          </div>
+
+          <div class="card card-4">
+            <div class="icon-circle">🌰</div>
+            <div class="card-content">
+              <h4>Shea Butter</h4>
+              <p>Deeply moisturizing skin.</p>
+            </div>
+          </div>
+
+          <div class="card card-5">
+            <div class="icon-circle">🌹</div>
+            <div class="card-content">
+              <h4>Rosehip Oil</h4>
+              <p>Restores skin elasticity.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Шаг 4: Плашки с полезными свойствами (Benefits) -->
+        <div class="benefits-layer" id="benefits-section">
+          <div class="benefit-card benefit-1">
+            <div class="icon-circle">💧</div>
+            <div class="card-content">
+              <h4>Deep Hydration</h4>
+              <p>
+                Provides deep hydration, soothing irritation, and promotes
+                healing.
+              </p>
+            </div>
+          </div>
+
+          <div class="benefit-card benefit-2">
+            <div class="icon-circle">🌿</div>
+            <div class="card-content">
+              <h4>Soothes Irritated Skin</h4>
+              <p>Soothes irritated skin, perfect for sensitive skin care.</p>
+            </div>
+          </div>
+
+          <div class="benefit-card benefit-3">
+            <div class="icon-circle">✨</div>
+            <div class="card-content">
+              <h4>Promotes Skin Healing</h4>
+              <p>
+                Enhances healing of small scars, blemishes, and minor
+                irritations.
+              </p>
+            </div>
+          </div>
+
+          <div class="benefit-card benefit-4">
+            <div class="icon-circle">🛡️</div>
+            <div class="card-content">
+              <h4>Rich in Antioxidants</h4>
+              <p>Fights aging signs, boosting skin's essential vitamins.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

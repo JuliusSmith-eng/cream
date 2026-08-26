@@ -1,0 +1,813 @@
+/* --- ПЕРЕМЕННЫЕ И ТЕМАТИЗАЦИЯ --- */
+:root {
+  --bg-gradient: linear-gradient(135deg, #072e1d 0%, #03140c 50%, #010805 100%);
+  --text-color: #ffffff;
+  --text-dim: #a3b5a8;
+  --accent-color: #72e096;
+  --card-border: rgba(255, 255, 255, 0.15);
+  --icon-bg: rgba(25, 35, 28, 0.55);
+  --shadow-color: rgba(0, 0, 0, 0.5);
+}
+
+/* Светлая тема (работает через атрибут на html или body) */
+[data-theme="light"],
+body.light-theme {
+  --bg-gradient: linear-gradient(135deg, #e4ece5 0%, #cce0d2 50%, #b8d0c0 100%);
+  --text-color: #0d1e13;
+  --text-dim: #3a5443;
+  --accent-color: #1a4d2b;
+  --card-border: rgba(26, 77, 43, 0.22);
+  --icon-bg: rgba(240, 247, 242, 0.65);
+  --shadow-color: rgba(5, 25, 12, 0.2);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg-gradient);
+  background-attachment: fixed;
+  min-height: 100vh;
+  color: var(--text-color);
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  transition:
+    background 0.6s ease,
+    color 0.6s ease;
+  overflow-x: hidden;
+}
+
+/* --- НАВИГАЦИЯ --- */
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 24px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 100;
+}
+
+.brand-logo {
+  height: 42px;
+  width: auto;
+  object-fit: contain;
+  opacity: 0.5;
+  filter: brightness(0.8);
+  transition:
+    opacity 0.8s ease,
+    filter 0.8s ease,
+    transform 0.8s ease;
+}
+
+body.state-1 .brand-logo,
+body.state-2 .brand-logo,
+body.state-3 .brand-logo {
+  opacity: 1;
+  filter: brightness(1.2) drop-shadow(0 2px 10px rgba(212, 175, 55, 0.3));
+  transform: scale(1.05);
+}
+
+nav a {
+  color: var(--text-dim);
+  text-decoration: none;
+  margin: 0 16px;
+  font-size: 14px;
+  transition: color 0.3s;
+}
+
+nav a:hover {
+  color: var(--accent-color);
+}
+
+.theme-toggle {
+  background: var(--icon-bg);
+  border: 1px solid var(--card-border);
+  color: var(--text-color);
+  padding: 8px 18px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 13px;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.theme-toggle:hover {
+  border-color: var(--accent-color);
+}
+
+/* --- СКРОЛЛ-ТРЕК И ВЬЮПОРТ --- */
+.scroll-track {
+  height: 400vh;
+  position: relative;
+}
+
+.sticky-viewport {
+  position: sticky;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* --- ФОНОВЫЙ ЛОГОТИП --- */
+.bg-logo-container {
+  position: absolute;
+  width: 65vw;
+  max-width: 900px;
+  z-index: 1;
+  pointer-events: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bg-logo-img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  opacity: 0.12;
+  filter: brightness(0.6) blur(1px);
+  transition:
+    opacity 0.9s ease,
+    filter 0.9s ease,
+    transform 0.9s ease;
+}
+
+body.state-1 .bg-logo-img,
+body.state-2 .bg-logo-img,
+body.state-3 .bg-logo-img {
+  opacity: 0.35;
+  filter: brightness(1.3) drop-shadow(0 0 35px rgba(212, 175, 55, 0.4));
+  transform: scale(1.05);
+}
+
+/* --- КУСТЫ (ПОЯВЛЯЮТСЯ ТОЛЬКО НА ШАГЕ 0) --- */
+.plants-layer {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 20;
+  pointer-events: none;
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.tree-left,
+.tree-right {
+  position: absolute;
+  height: 100vh;
+  bottom: 0;
+  object-fit: contain;
+  transition: transform 1.1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.tree-left {
+  left: -5vw;
+}
+.tree-right {
+  right: -5vw;
+}
+
+body.state-0 .tree-left {
+  transform: translateX(22vw) scale(1.15);
+}
+body.state-0 .tree-right {
+  transform: translateX(-22vw) scale(1.15);
+}
+body.state-0 .plants-layer {
+  opacity: 1;
+}
+
+body.state-1 .tree-left,
+body.state-2 .tree-left,
+body.state-3 .tree-left {
+  transform: translateX(-18vw) scale(0.9);
+}
+
+body.state-1 .tree-right,
+body.state-2 .tree-right,
+body.state-3 .tree-right {
+  transform: translateX(18vw) scale(0.9);
+}
+
+body.state-1 .plants-layer,
+body.state-2 .plants-layer,
+body.state-3 .plants-layer {
+  opacity: 0;
+  transform: translateY(120px);
+}
+
+/* --- ПРОДУКТ (КРЕМ) --- */
+.product-container {
+  position: relative;
+  width: 740px;
+  height: 740px;
+  margin-top: -160px;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  filter: drop-shadow(0 25px 35px var(--shadow-color));
+  transition:
+    transform 1s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.5s ease;
+}
+
+.jar-body,
+.jar-cap,
+.jar-closed {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.jar-body {
+  z-index: 1;
+  transform: translateY(350px);
+  opacity: 0;
+  transition:
+    transform 1s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.8s ease;
+}
+
+.jar-cap {
+  z-index: 3;
+  transform: translateY(-400px) rotate(20deg);
+  opacity: 0;
+  transition:
+    transform 1s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.8s ease;
+}
+
+.jar-closed {
+  z-index: 2;
+  opacity: 0;
+  transform: scale(0.95);
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s ease;
+}
+
+/* Шаг 2: открытая банка */
+body.state-1 .jar-body {
+  transform: translateY(0);
+  opacity: 1;
+}
+body.state-1 .jar-cap {
+  transform: translateY(-160px) rotate(10deg);
+  opacity: 1;
+}
+
+/* Шаг 3: закрытая банка */
+body.state-2 .jar-cap {
+  transform: translateY(0) rotate(0deg);
+  opacity: 0;
+}
+body.state-2 .jar-body {
+  opacity: 0;
+}
+body.state-2 .jar-closed {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Шаг 4: Позиция крем-банки ровно на ладони */
+body.state-3 .jar-cap {
+  transform: translateY(0) rotate(0deg);
+  opacity: 0;
+}
+body.state-3 .jar-body {
+  opacity: 0;
+}
+body.state-3 .jar-closed {
+  opacity: 1;
+}
+body.state-3 .product-container {
+  transform: translate(250px, 10px) scale(0.42);
+  margin-top: 0;
+  z-index: 5;
+}
+
+/* --- ИНФО-КАРТОЧКИ (ABOUT US - ШАГ 2) --- */
+.info-card {
+  position: absolute;
+  background: var(--icon-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--card-border);
+  padding: 18px 22px;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px var(--shadow-color);
+  max-width: 280px;
+  z-index: 5;
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.95);
+  transition:
+    opacity 0.6s ease,
+    transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.3s ease;
+}
+
+.info-card:hover {
+  border-color: var(--accent-color);
+}
+.info-card p {
+  font-size: 20px;
+  line-height: 1.5;
+  color: var(--text-dim);
+  margin-top: 6px;
+}
+.info-tag {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-color);
+  display: block;
+  letter-spacing: 0.5px;
+}
+.info-card p em {
+  font-style: italic;
+  font-weight: 600;
+  color: #d4af37;
+}
+
+body.state-1 .info-card {
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1);
+}
+
+.info-top-left {
+  top: 18%;
+  left: 6%;
+}
+.info-top-right {
+  top: 18%;
+  right: 6%;
+}
+.info-bottom-left {
+  bottom: 22%;
+  left: 6%;
+}
+.info-bottom-right {
+  bottom: 22%;
+  right: 6%;
+}
+
+.info-footer-wide {
+  bottom: 4%;
+  left: 50%;
+  transform: translateX(-50%) scale(0.95);
+  max-width: 680px;
+  width: 90%;
+  text-align: center;
+  padding: 16px 24px;
+}
+
+body.state-1 .info-footer-wide {
+  transform: translateX(-50%) scale(1);
+}
+.info-footer-wide p {
+  font-size: 20px;
+  color: var(--text-color);
+  margin: 0;
+}
+.gold-text {
+  color: #d4af37;
+  font-weight: 700;
+}
+
+/* --- ИНГРЕДИЕНТЫ (ШАГ 3) --- */
+.cards-layer {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -90px 0 0 -120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+  width: 240px;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  opacity: 0;
+  transform: translate(0, -120px) scale(0.2);
+  transition:
+    transform 1s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.8s ease;
+}
+
+.icon-circle {
+  width: 74px;
+  height: 74px;
+  min-width: 74px;
+  border-radius: 50%;
+  background: var(--icon-bg);
+  backdrop-filter: blur(8px);
+  border: 2px solid var(--accent-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px;
+  box-shadow: 0 10px 30px var(--shadow-color);
+}
+
+.card-content h4 {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-color);
+  margin-bottom: 4px;
+}
+.card-content p {
+  font-size: 12px;
+  color: var(--text-dim);
+  line-height: 1.4;
+}
+
+body.state-2 .card {
+  opacity: 1;
+}
+body.state-2 .card-1 {
+  transform: translate(-480px, -140px) scale(1);
+}
+body.state-2 .card-2 {
+  transform: translate(480px, -140px) scale(1);
+}
+body.state-2 .card-3 {
+  transform: translate(-350px, 40px) scale(1);
+}
+body.state-2 .card-4 {
+  transform: translate(350px, 40px) scale(1);
+}
+body.state-2 .card-5 {
+  transform: translate(0, 300px) scale(1);
+}
+/* --- 4-Й ШАГ (state-3): СИНХРОННЫЕ И АККУРАТНЫЕ ПРОПОРЦИИ --- */
+
+/* 1. Матовый круг справа (компактный и отзывчивый) */
+.benefit-circle-bg {
+  position: absolute;
+  right: -25vw;
+  top: 50%;
+  width: 42vw;
+  max-width: 620px;
+  min-width: 1200px;
+  height: 42vw;
+  max-height: 620px;
+  min-height: 1200px;
+  transform: translateY(-50%) scale(0.1);
+  background: var(--icon-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 50%;
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  z-index: 2;
+  opacity: 0;
+  transition:
+    transform 1.1s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.8s ease;
+  pointer-events: none;
+}
+
+body.state-3 .benefit-circle-bg {
+  opacity: 0.8;
+  transform: translateY(-50%) scale(1);
+}
+
+/* 2. Рука: сбросили 130% у картинки и вернули реальный размер */
+.hand-layer {
+  position: absolute;
+  width: 36vw;
+  max-width: 540px;
+  min-width: 360px;
+  right: -15vw;
+  bottom: 30vh;
+  opacity: 0;
+  transform: translate(15vw, 10vh) scale(0.6);
+  transform-origin: right bottom;
+  transition:
+    opacity 0.7s ease,
+    transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+  z-index: 3;
+}
+
+.hand-img {
+  width: 100%; /* Убрали 130% */
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 20px 40px var(--shadow-color));
+}
+
+body.state-3 .hand-layer {
+  opacity: 1;
+  transform: translate(0, 0) scale(1.8);
+}
+
+/* 3. Крем: вернули scale(0.42) и привязали translate к vw/vh */
+body.state-3 .jar-cap {
+  transform: translateY(0) rotate(0deg);
+  opacity: 0;
+}
+body.state-3 .jar-body {
+  opacity: 0;
+}
+body.state-3 .jar-closed {
+  opacity: 1;
+}
+
+body.state-3 .product-container {
+  /* translate(18vw, 4vh) смещает крем синхронно с рукой при изменении размера окна */
+  transform: translate(18vw, 4vh) scale(0.42);
+  margin-top: -160px;
+  z-index: 5;
+}
+
+/* 3. Крем: плавно опускается из центра точно на прилетающую ладонь */
+body.state-3 .jar-cap {
+  transform: translateY(0) rotate(0deg);
+  opacity: 0;
+}
+body.state-3 .jar-body {
+  opacity: 0;
+}
+body.state-3 .jar-closed {
+  opacity: 1;
+}
+
+body.state-3 .product-container {
+  transform: translate(24vw, 15vh) scale(0.9);
+  margin-top: -660px;
+  z-index: 5;
+}
+
+/* 4. Карточки преимуществ слева */
+.benefits-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 6;
+}
+
+.benefit-card {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  max-width: 440px;
+  background: transparent;
+  border: none;
+  padding: 0;
+  box-shadow: none;
+  opacity: 0;
+  transform: translateX(-60px);
+  transition:
+    opacity 0.7s ease,
+    transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+body.state-3 .benefit-card {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+}
+
+.benefit-card .icon-circle {
+  width: 74px;
+  height: 74px;
+  min-width: 74px;
+  border-radius: 50%;
+  background: var(--icon-bg);
+  border: 1px solid var(--card-border);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  box-shadow: 0 10px 25px var(--shadow-color);
+}
+
+.benefit-card h4 {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-color);
+  margin: 0 0 4px 0;
+}
+
+.benefit-card p {
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--text-dim);
+  margin: 0;
+}
+
+.benefit-1 {
+  top: 12%;
+  left: 6%;
+  transition-delay: 0.1s;
+}
+.benefit-2 {
+  top: 33%;
+  left: 6%;
+  transition-delay: 0.2s;
+}
+.benefit-3 {
+  top: 54%;
+  left: 6%;
+  transition-delay: 0.3s;
+}
+.benefit-4 {
+  top: 75%;
+  left: 6%;
+  transition-delay: 0.4s;
+}
+/* --- МОБИЛЬНАЯ АДАПТАЦИЯ (для экранов до 768px) --- */
+@media (max-width: 768px) {
+  /* 1. Навигация */
+  header {
+    padding: 16px 20px;
+  }
+  nav {
+    display: none;
+  }
+  .bg-logo-container {
+    width: 85vw;
+  }
+
+  /* 2. Базовый контейнер крема */
+  .product-container {
+    width: 320px;
+    height: 320px;
+    margin-top: -50px;
+  }
+
+  /* --- ШАГ 2: ИНФО-КАРТОЧКИ (state-1) --- */
+  .info-card {
+    padding: 10px 14px;
+    max-width: 145px;
+    border-radius: 10px;
+  }
+  .info-tag {
+    font-size: 13px;
+  }
+  .info-card p {
+    font-size: 11px;
+    line-height: 1.35;
+  }
+  .info-top-left {
+    top: 12%;
+    left: 4%;
+  }
+  .info-top-right {
+    top: 12%;
+    right: 4%;
+  }
+  .info-bottom-left {
+    bottom: 18%;
+    left: 4%;
+  }
+  .info-bottom-right {
+    bottom: 18%;
+    right: 4%;
+  }
+
+  .info-footer-wide {
+    bottom: 4%;
+    padding: 10px 14px;
+    max-width: 92%;
+  }
+  .info-footer-wide p {
+    font-size: 12px;
+  }
+
+  /* --- ШАГ 3: ИНГРЕДИЕНТЫ (state-2) --- */
+  .card {
+    width: 110px;
+    margin: -45px 0 0 -55px;
+    gap: 4px;
+  }
+  .icon-circle {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    font-size: 18px;
+  }
+  .card-content h4 {
+    font-size: 11px;
+    margin-bottom: 2px;
+  }
+  .card-content p {
+    font-size: 9px;
+    line-height: 1.25;
+  }
+
+  /* Координаты ингредиентов вокруг баночки */
+  body.state-2 .card-1 {
+    transform: translate(-110px, -130px) scale(1);
+  }
+  body.state-2 .card-2 {
+    transform: translate(110px, -130px) scale(1);
+  }
+  body.state-2 .card-3 {
+    transform: translate(-125px, 35px) scale(1);
+  }
+  body.state-2 .card-4 {
+    transform: translate(125px, 35px) scale(1);
+  }
+  body.state-2 .card-5 {
+    transform: translate(0, 185px) scale(1);
+  }
+
+  /* --- ШАГ 4: РУКА, КРУГ И ПРЕИМУЩЕСТВА (state-3) --- */
+  /* Круг опускаем в правый нижний угол */
+  .benefit-circle-bg {
+    width: 720px;
+    height: 720px;
+    right: -80vw;
+    top: 50%;
+  }
+
+  /* Рука выезжает снизу-справа */
+  .hand-layer {
+    width: 360px;
+    right: -15%;
+    bottom: 40%;
+    transform: translate(180px, 90px) scale(0.6);
+  }
+  body.state-3 .hand-layer {
+    transform: translate(0, 0) scale(1);
+  }
+
+  /* Баночка ровно садится на ладонь */
+  body.state-3 .product-container {
+    transform: translate(65px, -90px) scale(1);
+    margin-top: 0;
+  }
+
+  /* Карточки преимуществ слева уменьшаем */
+  .benefit-card {
+    max-width: 175px;
+    gap: 10px;
+  }
+  .benefit-card .icon-circle {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    font-size: 18px;
+  }
+  .benefit-card h4 {
+    font-size: 13px;
+    margin: 0;
+  }
+  .benefit-card p {
+    font-size: 10px;
+    line-height: 1.3;
+  }
+
+  .benefit-1 {
+    top: 12%;
+    left: 4%;
+  }
+  .benefit-2 {
+    top: 31%;
+    left: 4%;
+  }
+  .benefit-3 {
+    top: 50%;
+    left: 4%;
+  }
+  .benefit-4 {
+    top: 69%;
+    left: 4%;
+  }
+}
