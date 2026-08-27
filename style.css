@@ -226,7 +226,10 @@ body.state-3 .plants-layer {
   filter: drop-shadow(0 25px 35px var(--shadow-color));
   transition:
     transform 1s cubic-bezier(0.16, 1, 0.3, 1),
-    filter 0.5s ease;
+    filter 0.5s ease,
+    width 1s cubic-bezier(0.16, 1, 0.3, 1),
+    height 1s cubic-bezier(0.16, 1, 0.3, 1),
+    margin-top 1s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .jar-body,
@@ -286,23 +289,6 @@ body.state-2 .jar-body {
 body.state-2 .jar-closed {
   opacity: 1;
   transform: scale(1);
-}
-
-/* Шаг 4: Позиция крем-банки ровно на ладони */
-body.state-3 .jar-cap {
-  transform: translateY(0) rotate(0deg);
-  opacity: 0;
-}
-body.state-3 .jar-body {
-  opacity: 0;
-}
-body.state-3 .jar-closed {
-  opacity: 1;
-}
-body.state-3 .product-container {
-  transform: translate(250px, 10px) scale(0.42);
-  margin-top: 0;
-  z-index: 5;
 }
 
 /* --- ИНФО-КАРТОЧКИ (ABOUT US - ШАГ 2) --- */
@@ -474,14 +460,10 @@ body.state-2 .card-5 {
 /* 1. Матовый круг справа (компактный и отзывчивый) */
 .benefit-circle-bg {
   position: absolute;
-  right: -25vw;
+  right: -50vw;
   top: 50%;
-  width: 42vw;
-  max-width: 620px;
-  min-width: 1200px;
-  height: 42vw;
-  max-height: 620px;
-  min-height: 1200px;
+  width: 100vw;
+  height: 100vw;
   transform: translateY(-50%) scale(0.1);
   background: var(--icon-bg);
   border: 1px solid var(--card-border);
@@ -531,25 +513,6 @@ body.state-3 .hand-layer {
   transform: translate(0, 0) scale(1.8);
 }
 
-/* 3. Крем: вернули scale(0.42) и привязали translate к vw/vh */
-body.state-3 .jar-cap {
-  transform: translateY(0) rotate(0deg);
-  opacity: 0;
-}
-body.state-3 .jar-body {
-  opacity: 0;
-}
-body.state-3 .jar-closed {
-  opacity: 1;
-}
-
-body.state-3 .product-container {
-  /* translate(18vw, 4vh) смещает крем синхронно с рукой при изменении размера окна */
-  transform: translate(18vw, 4vh) scale(0.42);
-  margin-top: -160px;
-  z-index: 5;
-}
-
 /* 3. Крем: плавно опускается из центра точно на прилетающую ладонь */
 body.state-3 .jar-cap {
   transform: translateY(0) rotate(0deg);
@@ -563,6 +526,11 @@ body.state-3 .jar-closed {
 }
 
 body.state-3 .product-container {
+  /* Позицию, размер и margin-top на 4-м шаге теперь пересчитывает
+     script.js (syncJarToHand) на основе реальных координат руки —
+     это нужно, чтобы банка не "уплывала" от ладони при изменении
+     ширины окна. Значения ниже используются только как запасной
+     вариант, если JS по какой-то причине не выполнился. */
   transform: translate(24vw, 15vh) scale(0.9);
   margin-top: -660px;
   z-index: 5;
@@ -759,9 +727,9 @@ body.state-3 .benefit-card {
 
   /* Рука выезжает снизу-справа */
   .hand-layer {
-    width: 360px;
+    width: clamp(220px, 85vw, 340px);
     right: -15%;
-    bottom: 40%;
+    bottom: 33%;
     transform: translate(180px, 90px) scale(0.6);
   }
   body.state-3 .hand-layer {
@@ -809,5 +777,16 @@ body.state-3 .benefit-card {
   .benefit-4 {
     top: 69%;
     left: 4%;
+  }
+}
+
+/* Совсем узкие телефоны: рука ещё компактнее и ниже, чтобы не
+   наезжать на текст третьей карточки преимуществ ("Promotes Skin
+   Healing"), которая на такой ширине занимает почти всю среднюю
+   часть экрана. */
+@media (max-width: 400px) {
+  .hand-layer {
+    width: clamp(190px, 78vw, 260px);
+    bottom: 22%;
   }
 }
