@@ -4,18 +4,26 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>KORA — Botanical Skincare</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body class="state-0">
-    <header>
+    <div class="brand-pill glass-pill">
       <img src="images/logonoback.png" alt="KORA Logo" class="brand-logo" />
+    </div>
+    <header class="glass-pill">
       <nav>
-        <a href="#ingredients-section">Ingredients</a>
-        <a href="#benefits-section">Benefits</a>
-        <a href="#about-section">About</a>
+        <a href="#" data-scroll-progress="0.67">Ingredients</a>
+        <a href="#" data-scroll-progress="0.9">Benefits</a>
+        <a href="#" data-scroll-progress="0.4">About</a>
       </nav>
-      <button class="theme-toggle" id="themeBtn">☀️ Light</button>
     </header>
+    <button class="theme-toggle glass-pill" id="themeBtn">☀️ Light</button>
 
     <div class="scroll-track" id="about-section">
       <div class="sticky-viewport">
@@ -24,8 +32,16 @@
           <img src="images/logonoback.png" alt="" class="bg-logo-img" />
         </div>
 
+        <!-- Шаг 1: заголовок KORA -->
+        <div class="hero-title">
+          <h1>KORA</h1>
+          <span>Botanical Skincare</span>
+        </div>
+
         <!-- Кусты на первом плане -->
         <div class="plants-layer">
+          <img src="images/tree-left.png" class="tree-mid-left" alt="" />
+          <img src="images/tree-right.png" class="tree-mid-right" alt="" />
           <img src="images/tree-left.png" class="tree-left" alt="" />
           <img src="images/tree-right.png" class="tree-right" alt="" />
         </div>
@@ -95,7 +111,14 @@
             <div class="icon-circle">🌿</div>
             <div class="card-content">
               <h4>Aloe Vera</h4>
-              <p>Provides deep hydration.</p>
+              <p>
+                Aloe vera is a popular medicinal plant. People have used it for
+                thousands of years. This succulent plant stores water in its
+                thick leaves. Inside these leaves is a clear, nutrient-rich gel.
+                This gel contains vitamins, minerals, enzymes, and antioxidants.
+                These components give aloe vera its incredible healing
+                properties.
+              </p>
             </div>
           </div>
 
@@ -103,7 +126,13 @@
             <div class="icon-circle">💧</div>
             <div class="card-content">
               <h4>Squalane</h4>
-              <p>Maintains moisture balance.</p>
+              <p>
+                Squalane is a highly effective, lightweight oil used for deep
+                skin hydration. It is a stable derivative of squalene, a natural
+                component of human sebum. This makes it perfectly compatible
+                with all skin types. It absorbs instantly without leaving a
+                greasy residue or clogging pores.
+              </p>
             </div>
           </div>
 
@@ -111,7 +140,12 @@
             <div class="icon-circle">✨</div>
             <div class="card-content">
               <h4>Vitamin E</h4>
-              <p>Antioxidant protection.</p>
+              <p>
+                Vitamin E is a powerful, fat-soluble antioxidant essential for
+                healthy skin and overall wellness. It protects cells from
+                oxidative stress and environmental damage caused by UV rays and
+                pollution.
+              </p>
             </div>
           </div>
 
@@ -119,7 +153,11 @@
             <div class="icon-circle">🌰</div>
             <div class="card-content">
               <h4>Shea Butter</h4>
-              <p>Deeply moisturizing skin.</p>
+              <p>
+                Shea butter is a rich, natural fat extracted from the nuts of
+                the African shea tree. It has been used for centuries to deeply
+                nourish, protect, and heal the skin.
+              </p>
             </div>
           </div>
 
@@ -127,7 +165,11 @@
             <div class="icon-circle">🌹</div>
             <div class="card-content">
               <h4>Rosehip Oil</h4>
-              <p>Restores skin elasticity.</p>
+              <p>
+                Rosehip oil is a pressed seed oil extracted from wild rose
+                bushes. It is celebrated as a natural remedy for anti-aging and
+                skin regeneration.
+              </p>
             </div>
           </div>
         </div>
@@ -174,6 +216,115 @@
         </div>
       </div>
     </div>
+
+    <footer class="site-footer">
+      <div class="footer-glow"></div>
+
+      <div class="footer-top">
+        <div class="footer-brand">
+          <img
+            src="images/logonoback.png"
+            alt="KORA Logo"
+            class="footer-logo"
+          />
+          <p class="footer-tagline">
+            Botanical skincare, rooted in nature — crafted to nurture your
+            skin's natural radiance.
+          </p>
+          <div class="footer-socials">
+            <a href="#" class="social-icon" aria-label="Instagram">
+              <svg
+                viewBox="0 0 24 24"
+                width="17"
+                height="17"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+              >
+                <rect x="3" y="3" width="18" height="18" rx="5" />
+                <circle cx="12" cy="12" r="4.2" />
+                <circle
+                  cx="17.2"
+                  cy="6.8"
+                  r="1.1"
+                  fill="currentColor"
+                  stroke="none"
+                />
+              </svg>
+            </a>
+            <a href="#" class="social-icon" aria-label="Facebook">
+              <svg
+                viewBox="0 0 24 24"
+                width="17"
+                height="17"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+              >
+                <path
+                  d="M14.5 21v-7.5h2.5l.5-3h-3V8.2c0-.9.3-1.5 1.6-1.5H17.5V4.1C17.2 4.1 16.2 4 15 4c-2.4 0-4 1.5-4 4.1v2.4H8.5v3H11V21"
+                  stroke-linejoin="round"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </a>
+            <a href="#" class="social-icon" aria-label="Telegram">
+              <svg
+                viewBox="0 0 24 24"
+                width="17"
+                height="17"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+              >
+                <path
+                  d="M21 4.5 3.5 11.2c-.8.3-.8 1.5.1 1.7l4.2 1.3 1.6 5c.2.7 1.1.9 1.6.4l2.3-2.3 4.3 3.2c.7.5 1.7.1 1.9-.7l3-16.6c.2-1-.8-1.8-1.5-1.6Z"
+                  stroke-linejoin="round"
+                  stroke-linecap="round"
+                />
+                <path d="M8.8 14.7 17.5 8" stroke-linecap="round" />
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h5>Explore</h5>
+          <a href="#" data-scroll-progress="0.67">Ingredients</a>
+          <a href="#" data-scroll-progress="0.9">Benefits</a>
+          <a href="#" data-scroll-progress="0.4">About</a>
+        </div>
+
+        <div class="footer-col">
+          <h5>Support</h5>
+          <a href="#">Contact Us</a>
+          <a href="#">Shipping &amp; Returns</a>
+          <a href="#">FAQ</a>
+        </div>
+
+        <div class="footer-newsletter">
+          <h5>Stay in the loop</h5>
+          <p>Get 10% off your first order.</p>
+          <form class="footer-form" onsubmit="return false;">
+            <input
+              type="email"
+              placeholder="Your email"
+              aria-label="Email address"
+              required
+            />
+            <button type="submit">Subscribe</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© 2026 KORA. All rights reserved.</span>
+        <div class="footer-legal">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+        </div>
+      </div>
+    </footer>
 
     <script src="script.js"></script>
   </body>

@@ -9,9 +9,8 @@
   --shadow-color: rgba(0, 0, 0, 0.5);
 }
 
-/* Светлая тема (работает через атрибут на html или body) */
-[data-theme="light"],
-body.light-theme {
+/* Светлая тема (переключается атрибутом data-theme на <html>, см. script.js) */
+[data-theme="light"] {
   --bg-gradient: linear-gradient(135deg, #e4ece5 0%, #cce0d2 50%, #b8d0c0 100%);
   --text-color: #0d1e13;
   --text-dim: #3a5443;
@@ -45,16 +44,45 @@ body {
 }
 
 /* --- НАВИГАЦИЯ --- */
+/* Общий стеклянный стиль для трёх плавающих капсул шапки (лого,
+   меню, кнопка темы) — раньше background/border/blur/shadow были
+   продублированы в каждом блоке по отдельности. */
+.glass-pill {
+  background: var(--icon-bg);
+  border: 1px solid var(--card-border);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 8px 32px var(--shadow-color);
+  transition:
+    background 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
 header {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  padding: 24px 40px;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: fit-content;
+  max-width: calc(100% - 260px);
+  padding: 14px 28px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  gap: 36px;
   z-index: 100;
+  border-radius: 999px;
+}
+
+.brand-pill {
+  position: fixed;
+  top: 20px;
+  left: 24px;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  padding: 10px 22px;
+  border-radius: 999px;
 }
 
 .brand-logo {
@@ -78,31 +106,49 @@ body.state-3 .brand-logo {
 }
 
 nav a {
+  position: relative;
   color: var(--text-dim);
   text-decoration: none;
-  margin: 0 16px;
+  margin: 0 2px;
+  padding: 9px 18px;
+  border-radius: 999px;
+  border: 1px solid transparent;
   font-size: 14px;
-  transition: color 0.3s;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  transition:
+    color 0.3s ease,
+    background 0.3s ease,
+    border-color 0.3s ease,
+    font-weight 0.15s ease;
 }
 
 nav a:hover {
-  color: var(--accent-color);
+  color: var(--text-color);
+  background: var(--icon-bg);
+  border-color: var(--card-border);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  font-weight: 700;
 }
 
 .theme-toggle {
-  background: var(--icon-bg);
-  border: 1px solid var(--card-border);
+  position: fixed;
+  top: 20px;
+  right: 24px;
   color: var(--text-color);
   padding: 8px 18px;
   border-radius: 20px;
   cursor: pointer;
   font-size: 13px;
-  backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
+  font-weight: 500;
+  z-index: 100;
 }
 
 .theme-toggle:hover {
-  border-color: var(--accent-color);
+  border-color: #d4af37;
+  background: rgba(212, 175, 55, 0.12);
+  font-weight: 700;
 }
 
 /* --- СКРОЛЛ-ТРЕК И ВЬЮПОРТ --- */
@@ -154,6 +200,46 @@ body.state-3 .bg-logo-img {
   transform: scale(1.05);
 }
 
+/* --- ШАГ 1: ЗАГОЛОВОК KORA --- */
+.hero-title {
+  position: absolute;
+  top: 17%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-16px);
+  z-index: 25;
+  text-align: center;
+  pointer-events: none;
+  opacity: 0;
+  transition:
+    opacity 1s ease,
+    transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hero-title h1 {
+  margin: 0;
+  font-family: "Playfair Display", serif;
+  font-weight: 600;
+  font-size: clamp(48px, 6.5vw, 108px);
+  letter-spacing: 10px;
+  color: var(--text-color);
+  text-shadow: 0 0 50px rgba(212, 175, 55, 0.35);
+}
+
+.hero-title span {
+  display: block;
+  margin-top: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+body.state-0 .hero-title {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
 /* --- КУСТЫ (ПОЯВЛЯЮТСЯ ТОЛЬКО НА ШАГЕ 0) --- */
 .plants-layer {
   position: absolute;
@@ -171,8 +257,8 @@ body.state-3 .bg-logo-img {
 .tree-left,
 .tree-right {
   position: absolute;
-  height: 100vh;
-  bottom: 0;
+  height: 62vh;
+  bottom: -4vh;
   object-fit: contain;
   transition: transform 1.1s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -185,10 +271,50 @@ body.state-3 .bg-logo-img {
 }
 
 body.state-0 .tree-left {
-  transform: translateX(22vw) scale(1.15);
+  transform: translateX(22vw) scale(1.05);
 }
 body.state-0 .tree-right {
-  transform: translateX(-22vw) scale(1.15);
+  transform: translateX(-22vw) scale(1.05);
+}
+
+/* Дополнительные кусты по центру — закрывают просвет между левым и
+   правым кустом внизу экрана, лежат позади них (ниже z-index за счёт
+   порядка в разметке). */
+.tree-mid-left,
+.tree-mid-right {
+  position: absolute;
+  height: 60vh;
+  bottom: -8vh;
+  object-fit: contain;
+  opacity: 0.85;
+  transition: transform 1.1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.tree-mid-left {
+  left: 32vw;
+  transform: scaleX(-1);
+}
+.tree-mid-right {
+  right: 32vw;
+  transform: scaleX(-1);
+}
+
+body.state-0 .tree-mid-left {
+  transform: scaleX(-1) translateX(1vw) scale(1.1);
+}
+body.state-0 .tree-mid-right {
+  transform: scaleX(-1) translateX(-1vw) scale(1.1);
+}
+
+body.state-1 .tree-mid-left,
+body.state-2 .tree-mid-left,
+body.state-3 .tree-mid-left {
+  transform: scaleX(-1) translateY(120px);
+}
+body.state-1 .tree-mid-right,
+body.state-2 .tree-mid-right,
+body.state-3 .tree-mid-right {
+  transform: scaleX(-1) translateY(120px);
 }
 body.state-0 .plants-layer {
   opacity: 1;
@@ -393,13 +519,13 @@ body.state-1 .info-footer-wide {
   position: absolute;
   top: 50%;
   left: 50%;
-  margin: -90px 0 0 -120px;
+  margin: -125px 0 0 -150px;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   gap: 10px;
-  width: 240px;
+  width: 300px;
   background: transparent;
   border: none;
   box-shadow: none;
@@ -426,34 +552,42 @@ body.state-1 .info-footer-wide {
 }
 
 .card-content h4 {
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
   color: var(--text-color);
   margin-bottom: 4px;
 }
 .card-content p {
-  font-size: 12px;
+  font-size: 13.5px;
   color: var(--text-dim);
-  line-height: 1.4;
+  line-height: 1.5;
+  /* Ограничиваем высоту текста фиксированным числом строк — без
+     этого длинное описание ингредиента может растянуть карточку
+     настолько, что она наедет на соседние, независимо от того,
+     сколько текста туда впишут. */
+  display: -webkit-box;
+  -webkit-line-clamp: 6;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 body.state-2 .card {
   opacity: 1;
 }
 body.state-2 .card-1 {
-  transform: translate(-480px, -140px) scale(1);
+  transform: translate(-560px, -210px) scale(1);
 }
 body.state-2 .card-2 {
-  transform: translate(480px, -140px) scale(1);
+  transform: translate(560px, -210px) scale(1);
 }
 body.state-2 .card-3 {
-  transform: translate(-350px, 40px) scale(1);
+  transform: translate(-460px, 150px) scale(1);
 }
 body.state-2 .card-4 {
-  transform: translate(350px, 40px) scale(1);
+  transform: translate(460px, 150px) scale(1);
 }
 body.state-2 .card-5 {
-  transform: translate(0, 300px) scale(1);
+  transform: translate(0, 430px) scale(1);
 }
 /* --- 4-Й ШАГ (state-3): СИНХРОННЫЕ И АККУРАТНЫЕ ПРОПОРЦИИ --- */
 
@@ -502,7 +636,7 @@ body.state-3 .benefit-circle-bg {
 }
 
 .hand-img {
-  width: 100%; /* Убрали 130% */
+  width: 100%;
   height: auto;
   display: block;
   filter: drop-shadow(0 20px 40px var(--shadow-color));
@@ -621,12 +755,45 @@ body.state-3 .benefit-card {
 }
 /* --- МОБИЛЬНАЯ АДАПТАЦИЯ (для экранов до 768px) --- */
 @media (max-width: 768px) {
+  /* --- Производительность на слабых телефонах ---
+     background-attachment:fixed заставляет браузер перерисовывать
+     фон при каждом кадре скролла — на слабом Android это одна из
+     главных причин подтормаживания. На мобильных отключаем.
+     Также урезаем радиус blur() у всех стеклянных элементов: на
+     сайте одновременно активно ~15 backdrop-filter слоёв (шапка,
+     карточки, иконки, ховеры) — на маломощном GPU это ощутимо
+     дороже, чем на десктопе, а разница на глаз минимальна. */
+  body {
+    background-attachment: scroll;
+  }
+  .glass-pill,
+  .info-card,
+  .icon-circle,
+  .benefit-card .icon-circle,
+  .benefit-circle-bg,
+  .social-icon,
+  nav a:hover {
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+
   /* 1. Навигация */
   header {
-    padding: 16px 20px;
-  }
-  nav {
     display: none;
+  }
+  .brand-pill {
+    top: 12px;
+    left: 16px;
+    padding: 7px 16px;
+  }
+  .brand-logo {
+    height: 32px;
+  }
+  .theme-toggle {
+    top: 12px;
+    right: 16px;
+    padding: 7px 14px;
+    font-size: 12px;
   }
   .bg-logo-container {
     width: 85vw;
@@ -644,6 +811,7 @@ body.state-3 .benefit-card {
     padding: 10px 14px;
     max-width: 145px;
     border-radius: 10px;
+    z-index: 15;
   }
   .info-tag {
     font-size: 13px;
@@ -680,9 +848,9 @@ body.state-3 .benefit-card {
 
   /* --- ШАГ 3: ИНГРЕДИЕНТЫ (state-2) --- */
   .card {
-    width: 110px;
-    margin: -45px 0 0 -55px;
-    gap: 4px;
+    width: 140px;
+    margin: -62px 0 0 -70px;
+    gap: 6px;
   }
   .icon-circle {
     width: 44px;
@@ -691,29 +859,31 @@ body.state-3 .benefit-card {
     font-size: 18px;
   }
   .card-content h4 {
-    font-size: 11px;
+    font-size: 12px;
     margin-bottom: 2px;
   }
   .card-content p {
-    font-size: 9px;
-    line-height: 1.25;
+    font-size: 10.5px;
+    line-height: 1.3;
+    -webkit-line-clamp: 4;
   }
 
-  /* Координаты ингредиентов вокруг баночки */
+  /* Координаты ингредиентов вокруг баночки — раздвинуты шире, чтобы
+     карточки с длинным текстом не наезжали друг на друга по вертикали */
   body.state-2 .card-1 {
-    transform: translate(-110px, -130px) scale(1);
+    transform: translate(-120px, -175px) scale(1);
   }
   body.state-2 .card-2 {
-    transform: translate(110px, -130px) scale(1);
+    transform: translate(120px, -175px) scale(1);
   }
   body.state-2 .card-3 {
-    transform: translate(-125px, 35px) scale(1);
+    transform: translate(-120px, 65px) scale(1);
   }
   body.state-2 .card-4 {
-    transform: translate(125px, 35px) scale(1);
+    transform: translate(120px, 65px) scale(1);
   }
   body.state-2 .card-5 {
-    transform: translate(0, 185px) scale(1);
+    transform: translate(0, 280px) scale(1);
   }
 
   /* --- ШАГ 4: РУКА, КРУГ И ПРЕИМУЩЕСТВА (state-3) --- */
@@ -788,5 +958,235 @@ body.state-3 .benefit-card {
   .hand-layer {
     width: clamp(190px, 78vw, 260px);
     bottom: 22%;
+  }
+}
+
+/* --- ПОДВАЛ --- */
+.site-footer {
+  position: relative;
+  background:
+    linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.35) 100%),
+    var(--bg-gradient);
+  border-top: 1px solid var(--card-border);
+  padding: 72px 60px 32px;
+  overflow: hidden;
+  z-index: 30;
+}
+
+.footer-glow {
+  position: absolute;
+  top: 0;
+  right: -10vw;
+  width: 40vw;
+  height: 40vw;
+  max-width: 480px;
+  max-height: 480px;
+  background: radial-gradient(
+    circle,
+    rgba(212, 175, 55, 0.12) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+}
+
+.footer-top {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 1fr 1.4fr;
+  gap: 48px;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding-bottom: 48px;
+}
+
+.footer-logo {
+  height: 34px;
+  width: auto;
+  object-fit: contain;
+  opacity: 0.9;
+  margin-bottom: 16px;
+}
+
+.footer-tagline {
+  color: var(--text-dim);
+  font-size: 14px;
+  line-height: 1.6;
+  max-width: 320px;
+  margin-bottom: 20px;
+}
+
+.footer-socials {
+  display: flex;
+  gap: 12px;
+}
+
+.social-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--icon-bg);
+  border: 1px solid var(--card-border);
+  color: var(--text-dim);
+  text-decoration: none;
+  backdrop-filter: blur(8px);
+  transition:
+    border-color 0.3s ease,
+    background 0.3s ease,
+    color 0.3s ease,
+    transform 0.3s ease;
+}
+
+.social-icon:hover {
+  border-color: #d4af37;
+  background: rgba(212, 175, 55, 0.12);
+  color: #d4af37;
+  transform: translateY(-2px);
+}
+
+.footer-col h5,
+.footer-newsletter h5 {
+  color: var(--text-color);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-bottom: 18px;
+}
+
+.footer-col {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.footer-col a {
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition:
+    color 0.3s ease,
+    font-weight 0.15s ease;
+  width: fit-content;
+}
+
+.footer-col a:hover {
+  color: #d4af37;
+  font-weight: 700;
+}
+
+.footer-newsletter p {
+  color: var(--text-dim);
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.footer-form {
+  display: flex;
+  gap: 8px;
+}
+
+.footer-form input {
+  flex: 1;
+  min-width: 0;
+  padding: 11px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--card-border);
+  background: var(--icon-bg);
+  color: var(--text-color);
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.footer-form input::placeholder {
+  color: var(--text-dim);
+}
+
+.footer-form input:focus {
+  border-color: #d4af37;
+}
+
+.footer-form button {
+  padding: 11px 20px;
+  border-radius: 10px;
+  border: 1px solid #d4af37;
+  background: transparent;
+  color: #d4af37;
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background 0.3s ease,
+    color 0.3s ease;
+}
+
+.footer-form button:hover {
+  background: #d4af37;
+  color: #0d1e13;
+}
+
+.footer-bottom {
+  position: relative;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding-top: 24px;
+  border-top: 1px solid var(--card-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.footer-bottom span {
+  color: var(--text-dim);
+  font-size: 13px;
+}
+
+.footer-legal {
+  display: flex;
+  gap: 24px;
+}
+
+.footer-legal a {
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: 13px;
+  transition: color 0.3s ease;
+}
+
+.footer-legal a:hover {
+  color: #d4af37;
+}
+
+@media (max-width: 900px) {
+  .footer-top {
+    grid-template-columns: 1fr 1fr;
+    row-gap: 40px;
+  }
+  .footer-brand {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 560px) {
+  .site-footer {
+    padding: 56px 24px 24px;
+  }
+  .footer-top {
+    grid-template-columns: 1fr;
+    row-gap: 32px;
+  }
+  .footer-form {
+    flex-direction: column;
+  }
+  .footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }

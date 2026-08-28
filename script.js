@@ -15,12 +15,37 @@ themeBtn.addEventListener("click", () => {
   themeBtn.textContent = newTheme === "dark" ? "☀️ Light" : "🌙 Dark";
 });
 
+// trackHeight не меняется от скролла — только от размеров страницы.
+// Кэшируем и обновляем только при ресайзе, а не на каждом кадре
+// скролла/клика (offsetHeight-чтение форсирует layout).
+let trackHeight = scrollTrack.offsetHeight - window.innerHeight;
+function recalcTrackHeight() {
+  trackHeight = scrollTrack.offsetHeight - window.innerHeight;
+}
+
+// Пункты меню (Ingredients / Benefits / About) должны прыгать не на
+// начало .scroll-track (это единственное, что умеет обычный якорь
+// <a href="#...">, так как все "шаги" — это просто разные scroll-
+// прогрессы внутри одного sticky-блока, а не отдельные элементы в
+// потоке документа), а на конкретный шаг сценария. Поэтому вместо
+// href считаем нужный scrollTop из доли прогресса (data-scroll-progress).
+document.querySelectorAll("[data-scroll-progress]").forEach((link) => {
+  link.addEventListener("click", (e) => {
+    e.preventDefault();
+    const progress = parseFloat(link.dataset.scrollProgress);
+    window.scrollTo({
+      top: trackHeight * progress,
+      behavior: "smooth",
+    });
+  });
+});
+
 // Логика скролл-анимации на 4 шага (0, 1, 2, 3)
 let ticking = false;
+let prevState = "";
 
 function updateScrollState() {
   const scrollTop = window.scrollY;
-  const trackHeight = scrollTrack.offsetHeight - window.innerHeight;
 
   if (trackHeight <= 0) {
     ticking = false;
@@ -31,20 +56,29 @@ function updateScrollState() {
   scrollProgress = Math.max(0, Math.min(1, scrollProgress));
 
   // Делим скролл на 4 интервала
+  let state;
   if (scrollProgress < 0.25) {
-    body.className = "state-0";
+    state = "state-0";
   } else if (scrollProgress < 0.55) {
-    body.className = "state-1";
+    state = "state-1";
   } else if (scrollProgress < 0.8) {
-    body.className = "state-2";
+    state = "state-2";
   } else {
-    body.className = "state-3";
+    state = "state-3";
   }
 
-  if (body.classList.contains("state-3")) {
-    syncJarToHand(false);
-  } else {
-    clearJarOverride();
+  if (state !== prevState) {
+    body.className = state;
+    // Тяжёлый пересчёт (клон DOM руки + forced reflow) нужен только
+    // в момент ПЕРЕХОДА в состояние, а не на каждом кадре скролла
+    // внутри него — раньше это гоняло клонирование ноды на каждый
+    // scroll-тик, даже если рука уже стоит на месте.
+    if (state === "state-3") {
+      syncJarToHand(false);
+    } else if (prevState === "state-3") {
+      clearJarOverride();
+    }
+    prevState = state;
   }
 
   ticking = false;
@@ -166,6 +200,7 @@ let resizeTicking = false;
 window.addEventListener("resize", () => {
   if (!resizeTicking) {
     window.requestAnimationFrame(() => {
+      recalcTrackHeight();
       syncJarToHand(true);
       resizeTicking = false;
     });
