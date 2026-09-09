@@ -1,4 +1,4 @@
-# Hi there, I'm Julius 👋
+# Hi there, I'm Vladimir 👋
 
 ### 🚀 Front-End & Landing Page Developer
 I specialize in turning **Figma, Adobe XD, and PSD designs into responsive, pixel-perfect, and high-performing websites** using clean code.
